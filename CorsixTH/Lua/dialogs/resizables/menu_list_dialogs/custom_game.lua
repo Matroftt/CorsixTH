@@ -82,16 +82,35 @@ function UICustomGame:UICustomGame(ui)
     self:close()
     return
   end
-
-  self:addBevelPanel(280, 230, 140, 20, self.col_bg):setLabel(_S.custom_game_window.free_build).lowered = true
-  local button =  self:addPanel(12, 430, 225):makeToggleButton(0, 0, 29, 29, 11, self.buttonFreebuild)
+--[[
+  self:addBevelPanel(20, 275, 140, 20, self.col_bg):setLabel(_S.custom_game_window.free_build).lowered = true
+  local button =  self:addPanel(12, 170, 270):makeToggleButton(0, 0, 29, 29, 11, self.buttonFreebuild)
     :setTooltip(_S.tooltip.custom_game_window.free_build)
   if self.ui.app.config.free_build_mode then
     button:toggle()
   end
-
-  -- Finally the load button
-  self:addBevelPanel(480, 220, 100, 40, self.col_bg)
+    
+  self:addBevelPanel(210, 275, 140, 20, self.col_bg):setLabel("Endless Mode").lowered = true
+  local button =  self:addPanel(12, 360, 270):makeToggleButton(0, 0, 29, 29, 11, self.buttonEndless)
+    :setTooltip(_S.tooltip.custom_game_window.free_build)
+  if self.ui.app.config.endless then
+    button:toggle()
+  end
+  
+  self:addBevelPanel(400, 275, 140, 20, self.col_bg):setLabel("Patient Flood").lowered = true
+  local button =  self:addPanel(12, 550, 270):makeToggleButton(0, 0, 29, 29, 11, self.buttonFlood)
+    :setTooltip(_S.tooltip.custom_game_window.free_build)
+  if self.ui.app.config.something then
+    button:toggle()
+  end
+  --]]
+  
+  self:addBevelPanel(270, 220, 100, 40, self.col_bg)
+    :setLabel("Modificators")
+    :makeButton(0, 0, 100, 40, 11, self.buttonAddonMenu)
+    :setTooltip(_S.tooltip.custom_game_window.load_selected_level)
+	
+  self:addBevelPanel(380, 220, 200, 40, self.col_bg)
     :setLabel(_S.custom_game_window.load_selected_level)
     :makeButton(0, 0, 100, 40, 11, self.buttonLoadLevel)
     :setTooltip(_S.tooltip.custom_game_window.load_selected_level)
@@ -133,14 +152,27 @@ function UICustomGame:buttonLoadLevel()
       self.ui:addWindow(UIInformation(self.ui, {errors}))
       return
     end
-    app:loadLevel(item.level_file, nil, self.chosen_level_name, item.map_file,
-        self.chosen_level_description, nil, _S.errors.load_level_prefix)
+    app:loadLevel(item.level_file, nil, self.chosen_level_name, item.map_file, self.chosen_level_description)
   end
+end
+
+function UICustomGame:buttonAddonMenu()
+  local window = UIAddonMenu(self.ui, "hi")
+  self.ui:addWindow(window)
 end
 
 function UICustomGame:buttonFreebuild(checked)
   self.ui.app.config.free_build_mode = checked
 end
+
+function UICustomGame:buttonEndless(checked)
+  self.ui.app.config.endless = checked
+end
+
+function UICustomGame:buttonFlood(checked)
+  self.ui.app.config.patient_flood = checked
+end
+
 
 function UICustomGame:draw(canvas, x, y)
   UIMenuList.draw(self, canvas, x, y)
