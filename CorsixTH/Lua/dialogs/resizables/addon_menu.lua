@@ -27,7 +27,7 @@ local col_bg = {
    green = 146,
    blue = 198,
  }
- 
+
 local col_highlight = {
   red = 174,
   green = 166,
@@ -54,11 +54,6 @@ function UIAddonMenu:UIAddonMenu(ui)
   self.resizable = false
   self:setDefaultPosition(-20, -20)
   self.white_font = app.gfx:loadFont("QData", "Font01V")
-  
-  -- Title
-  self:addBevelPanel(20, 10, 370, 20, col_caption):setLabel("Addon Menu")
-  
-  -- Addons
   if not pcall(function()
     local palette = ui.app.gfx:loadPalette("QData", "DrugN01V.pal", true)
     self.panel_sprites = ui.app.gfx:loadSpriteTable("QData", "DrugN02V", true, palette)
@@ -68,39 +63,50 @@ function UIAddonMenu:UIAddonMenu(ui)
     return
   end
   
-  self:addBevelPanel(20, 60, 140, 20, col_bg):setLabel(_S.custom_game_window.free_build).lowered = true
-  local button =  self:addPanel(12, 170, 55):makeToggleButton(0, 0, 29, 29, 11, self.buttonFreebuild)
+  -- Title
+  self:addBevelPanel(20, 10, 370, 20, col_caption):setLabel("Addon Menu")
+  
+  -- Category
+  self:addBevelPanel(20, 35, 370, 20, col_shadow, col_bg, col_bg)
+    :setLabel("General"):setTooltip(_S.tooltip.options_window.fullscreen).lowered = true
+  
+  -- Addons
+  
+  self:addBevelPanel(20, 65, 140, 20, col_bg):setLabel(_S.custom_game_window.free_build).lowered = true
+  local freebuild_button =  self:addPanel(12, 170, 60):makeToggleButton(0, 0, 29, 29, 11, self.buttonFreebuild)
     :setTooltip(_S.tooltip.custom_game_window.free_build)
   if self.ui.app.config.free_build_mode then
-    button:toggle()
+    freebuild_button:toggle()
   end
     
-  self:addBevelPanel(210, 60, 140, 20, col_bg):setLabel("Endless Mode").lowered = true
-  local button =  self:addPanel(12, 360, 55):makeToggleButton(0, 0, 29, 29, 11, self.buttonEndless)
+  self:addBevelPanel(210, 65, 140, 20, col_bg):setLabel("Endless Mode").lowered = true
+  local endless_button =  self:addPanel(12, 360, 60):makeToggleButton(0, 0, 29, 29, 11, self.buttonEndless)
     :setTooltip(_S.tooltip.custom_game_window.free_build)
   if self.ui.app.config.endless then
-    button:toggle()
+    endless_button:toggle()
   end
   
-  self:addBevelPanel(20, 100, 140, 20, col_bg):setLabel("Patient Flood").lowered = true
-  local button =  self:addPanel(12, 170, 95):makeToggleButton(0, 0, 29, 29, 11, self.buttonFlood)
+  self:addBevelPanel(20, 105, 140, 20, col_bg):setLabel("TBA").lowered = true
+  local flood_button =  self:addPanel(12, 170, 100):makeToggleButton(0, 0, 29, 29, 11, self.buttonSomething)
     :setTooltip(_S.tooltip.custom_game_window.free_build)
   if self.ui.app.config.patient_flood then
-    button:toggle()
+    flood_button:toggle()
   end
   
+  self:addBevelPanel(210, 105, 140, 20, col_bg):setLabel("TBA").lowered = true
+  local tba_button =  self:addPanel(12, 360, 100):makeToggleButton(0, 0, 29, 29, 11, self.buttonSomething)
+    :setTooltip(_S.tooltip.custom_game_window.free_build)
   -- Reset and Close buttons
   
-  self:addBevelPanel(190, 250, 100, 40, col_bg)
+  self:addBevelPanel(210, 250, 90, 40, col_bg)
     :setLabel("Reset")
-    :makeButton(0, 0, 100, 40, 11, self.buttonClose)
+    :makeButton(0, 0, 100, 40, 11, self.buttonReset)
     :setTooltip(_S.tooltip.custom_game_window.load_selected_level)
 	
-  self:addBevelPanel(300, 250, 100, 40, col_bg)
+  self:addBevelPanel(310, 250, 90, 40, col_bg)
     :setLabel("Close")
     :makeButton(0, 0, 100, 40, 11, self.buttonClose)
     :setTooltip(_S.tooltip.custom_game_window.load_selected_level)
-  
 end
 
 function UIAddonMenu:draw(canvas, x, y)
@@ -122,8 +128,12 @@ function UIAddonMenu:buttonFlood(checked)
   self.ui.app.config.patient_flood = checked
 end
 
+function UIAddonMenu:buttonSomething(checked)
+  self.ui.app.config.something = checked
+end
+
 function UIAddonMenu:buttonReset()
-  print("reset button pressed")
+  freebuild_button
 end
 
 function UIAddonMenu:buttonClose()
