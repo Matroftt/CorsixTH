@@ -68,7 +68,7 @@ namespace {
 constexpr double pi = 3.14159265358979323846;
 
 //! The number of game ticks between jelly the jelly effect activating.
-constexpr int jelly_effect_period = 540;
+constexpr int jelly_effect_period = 90;
 
 //! The number of game ticks the jelly effect is active for when it runs.
 constexpr int jelly_effect_duration = 90;
@@ -881,7 +881,7 @@ SDL_Texture* render_target::create_palettized_texture(
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
   SDL_Texture* pTexture = create_texture(iWidth, iHeight, pARGBPixels);
   if (iSpriteFlags & thdf_nearest)
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
   delete[] pARGBPixels;
   return pTexture;
 }
